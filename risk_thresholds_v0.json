@@ -1,0 +1,121 @@
+{
+  "version": "0.1.0",
+  "project_domain": "water_conservancy",
+  "scope": {
+    "structures": ["dam", "sluice"],
+    "deployment": "private",
+    "coordinate_system": {
+      "primary": "CGCS2000",
+      "optional": ["WGS84"]
+    }
+  },
+  "risk_levels": ["low", "medium", "high", "critical"],
+  "rules": [
+    {
+      "id": "GEO_PLANAR_OFFSET",
+      "name": "关键构件平面偏移",
+      "category": "geometry",
+      "enabled": true,
+      "metric": "planar_offset_m",
+      "target_objects": ["dam_axis", "sluice_axis", "pier", "gate_slot"],
+      "thresholds": { "low": 0.05, "medium": 0.10, "high": 0.20, "critical": 0.30 },
+      "comparison": ">",
+      "evidence": ["design_object_id", "measured_offset_m", "screenshot_uri"],
+      "action": {
+        "high": "现场复核测量",
+        "critical": "暂停相关工序并组织专项复核"
+      }
+    },
+    {
+      "id": "GEO_ELEVATION_DEVIATION",
+      "name": "关键构件高程偏差",
+      "category": "geometry",
+      "enabled": true,
+      "metric": "elevation_deviation_m",
+      "target_objects": ["crest", "floor_slab", "gate_threshold"],
+      "thresholds": { "low": 0.03, "medium": 0.08, "high": 0.15, "critical": 0.25 },
+      "comparison": ">",
+      "evidence": ["benchmark_id", "measured_elevation", "snapshot_uri"],
+      "action": {
+        "high": "复测并核对施工记录",
+        "critical": "启动监理会审与复核"
+      }
+    },
+    {
+      "id": "DIMENSION_DEVIATION_RATE",
+      "name": "关键尺寸偏差率",
+      "category": "dimension",
+      "enabled": true,
+      "metric": "dimension_deviation_rate",
+      "target_objects": ["sluice_chamber", "pier", "apron"],
+      "thresholds": { "low": 0.005, "medium": 0.010, "high": 0.020, "critical": 0.030 },
+      "comparison": ">",
+      "evidence": ["design_dimension", "measured_dimension", "calculation_sheet_uri"],
+      "action": {
+        "high": "复核放样与边线",
+        "critical": "组织专项复核与变更评估"
+      }
+    },
+    {
+      "id": "SEM_MISSING_CONSTRUCTION",
+      "name": "漏建检测（设计有、实景无）",
+      "category": "semantic",
+      "enabled": true,
+      "metric": "missing_object_count",
+      "target_objects": ["all_key_objects"],
+      "thresholds": { "medium": 1, "high": 3, "critical": 5 },
+      "comparison": ">=",
+      "evidence": ["design_object_id_list", "evidence_tiles"],
+      "action": {
+        "medium": "补勘并确认工序状态",
+        "high": "下发整改任务",
+        "critical": "升级项目风险通报"
+      }
+    },
+    {
+      "id": "SEM_UNPLANNED_CONSTRUCTION",
+      "name": "疑似违建（实景有、设计无）",
+      "category": "semantic",
+      "enabled": true,
+      "metric": "unplanned_object_count",
+      "target_objects": ["all_key_objects"],
+      "thresholds": { "high": 1, "critical": 3 },
+      "comparison": ">=",
+      "evidence": ["detected_object_id_list", "overlay_snapshot_uri"],
+      "action": {
+        "high": "核查设计变更单",
+        "critical": "立即组织现场核查与合规审查"
+      }
+    },
+    {
+      "id": "STR_LOCAL_DEFORMATION",
+      "name": "局部变形疑似",
+      "category": "structure",
+      "enabled": true,
+      "metric": "deformation_m",
+      "target_objects": ["dam_face", "sluice_pier", "retaining_wall"],
+      "compound_conditions": { "min_deformation_m": 0.10, "min_area_m2": 2.0 },
+      "thresholds": { "high": 0.10, "critical": 0.20 },
+      "comparison": ">",
+      "evidence": ["deformation_heatmap_uri", "area_m2", "max_deformation_m"],
+      "action": {
+        "high": "现场复核并加密监测",
+        "critical": "立即启动专项安全评估"
+      }
+    }
+  ],
+  "global_policy": {
+    "confidence_threshold": 0.70,
+    "auto_close_allowed": false,
+    "require_human_review_for": ["high", "critical"],
+    "notification": {
+      "channels": ["system", "sms", "email"],
+      "critical_ack_timeout_minutes": 30
+    }
+  },
+  "metadata": {
+    "source": "initial_v0_by_engineering_assumption",
+    "note": "规范条文映射完成后升级为v1",
+    "updated_at": "2026-04-16"
+  }
+}

@@ -1,0 +1,986 @@
+openapi: 3.0.3
+info:
+  title: 水利工程CAD对比实景系统 API
+  version: 1.0.0
+  description: |
+    私有化部署 API 规范（草案）。
+    Base URL: /api/v1
+servers:
+  - url: /api/v1
+tags:
+  - name: Auth
+  - name: Projects
+  - name: Ingest
+  - name: Models
+  - name: Registration
+  - name: Diff
+  - name: AI
+  - name: Risk
+  - name: Workorders
+  - name: Visual
+  - name: LLM
+  - name: Jobs
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: 用户登录
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/LoginResponse'
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: 获取当前用户
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /projects:
+    post:
+      tags: [Projects]
+      summary: 创建项目
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+      responses:
+        '200':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags: [Projects]
+      summary: 项目列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /projects/{project_id}/scenes:
+    post:
+      tags: [Projects]
+      summary: 创建场景批次
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSceneRequest'
+      responses:
+        '200':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ingest/cad/upload:
+    post:
+      tags: [Ingest]
+      summary: 上传CAD文件
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ingest/cad/parse-jobs:
+    post:
+      tags: [Ingest]
+      summary: 提交CAD解析任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CadParseJobRequest'
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ingest/uav/upload:
+    post:
+      tags: [Ingest]
+      summary: 上传无人机影像包
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ingest/recon/jobs:
+    post:
+      tags: [Ingest]
+      summary: 提交重建任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconJobRequest'
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ingest/gcp:
+    post:
+      tags: [Ingest]
+      summary: 上传控制点数据
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [project_id, scene_id, points]
+              properties:
+                project_id:
+                  type: string
+                  format: uuid
+                scene_id:
+                  type: string
+                  format: uuid
+                points:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      point_id:
+                        type: string
+                      x:
+                        type: number
+                      y:
+                        type: number
+                      z:
+                        type: number
+      responses:
+        '200':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /models:
+    get:
+      tags: [Models]
+      summary: 查询模型资源
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: project_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: scene_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [design, reality]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /registration/jobs:
+    post:
+      tags: [Registration]
+      summary: 提交配准任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationJobRequest'
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /registration/jobs/{job_id}:
+    get:
+      tags: [Registration]
+      summary: 查询配准结果
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /diff/jobs:
+    post:
+      tags: [Diff]
+      summary: 提交差异检测任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiffJobRequest'
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /diff/results:
+    get:
+      tags: [Diff]
+      summary: 查询差异结果
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: project_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: scene_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: risk_level
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /diff/results/{result_id}/review:
+    post:
+      tags: [Diff]
+      summary: 差异结果复核
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: result_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [confirmed, rejected]
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ai/vision/jobs:
+    post:
+      tags: [AI]
+      summary: 提交AI识别任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIVisionJobRequest'
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /ai/vision/results:
+    get:
+      tags: [AI]
+      summary: 查询AI识别结果
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: scene_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: label
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /risk/rulesets:
+    get:
+      tags: [Risk]
+      summary: 获取规则集列表
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /risk/rulesets/import:
+    post:
+      tags: [Risk]
+      summary: 导入规则集（yaml/json）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: 导入成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /risk/evaluate/jobs:
+    post:
+      tags: [Risk]
+      summary: 提交风险评估任务
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [project_id, scene_id, ruleset_id]
+              properties:
+                project_id:
+                  type: string
+                  format: uuid
+                scene_id:
+                  type: string
+                  format: uuid
+                ruleset_id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: 提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /risk/events:
+    get:
+      tags: [Risk]
+      summary: 风险事件列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: level
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [open, in_progress, resolved, closed]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /risk/events/{event_id}:
+    get:
+      tags: [Risk]
+      summary: 风险事件详情
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /workorders:
+    post:
+      tags: [Workorders]
+      summary: 创建工单
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event_id, assignee, deadline]
+              properties:
+                event_id:
+                  type: string
+                  format: uuid
+                assignee:
+                  type: string
+                deadline:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /workorders/{id}/transition:
+    post:
+      tags: [Workorders]
+      summary: 工单流转
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action:
+                  type: string
+                  enum: [accept, resolve, reopen, close]
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /visual/tilesets:
+    get:
+      tags: [Visual]
+      summary: 获取Tileset地址
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: scene_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /visual/hotspots:
+    get:
+      tags: [Visual]
+      summary: 获取热区与告警点
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: scene_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: level
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /llm/risk-explain:
+    post:
+      tags: [LLM]
+      summary: 风险说明生成
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event_id]
+              properties:
+                event_id:
+                  type: string
+                  format: uuid
+                language:
+                  type: string
+                  default: zh-CN
+                style:
+                  type: string
+                  default: engineer
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /llm/remediation-plan:
+    post:
+      tags: [LLM]
+      summary: 处置建议生成
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event_id]
+              properties:
+                event_id:
+                  type: string
+                  format: uuid
+                constraints:
+                  type: object
+                  additionalProperties: true
+                output_format:
+                  type: string
+                  enum: [text, markdown, json]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /llm/spec-qa:
+    post:
+      tags: [LLM]
+      summary: 规范问答（RAG）
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question:
+                  type: string
+                project_context:
+                  type: object
+                  additionalProperties: true
+                top_k:
+                  type: integer
+                  default: 5
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /jobs/{job_id}:
+    get:
+      tags: [Jobs]
+      summary: 查询任务状态
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /jobs/{job_id}/cancel:
+    post:
+      tags: [Jobs]
+      summary: 取消任务
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: 取消成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ProjectId:
+      in: path
+      name: project_id
+      required: true
+      schema:
+        type: string
+        format: uuid
+    JobId:
+      in: path
+      name: job_id
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: ok
+        data:
+          type: object
+          additionalProperties: true
+        request_id:
+          type: string
+          example: req_xxx
+        timestamp:
+          type: string
+          format: date-time
+
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expires_in:
+          type: integer
+        roles:
+          type: array
+          items:
+            type: string
+
+    CreateProjectRequest:
+      type: object
+      required: [name, code, coordinate_system]
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        coordinate_system:
+          type: string
+          example: CGCS2000
+        location:
+          type: string
+
+    CreateSceneRequest:
+      type: object
+      required: [scene_name]
+      properties:
+        scene_name:
+          type: string
+        capture_time:
+          type: string
+          format: date-time
+        description:
+          type: string
+
+    CadParseJobRequest:
+      type: object
+      required: [project_id, scene_id, file_id]
+      properties:
+        project_id:
+          type: string
+          format: uuid
+        scene_id:
+          type: string
+          format: uuid
+        file_id:
+          type: string
+          format: uuid
+        mapping_template_id:
+          type: string
+          default: default-water-v1
+
+    ReconJobRequest:
+      type: object
+      required: [project_id, scene_id, image_set_id]
+      properties:
+        project_id:
+          type: string
+          format: uuid
+        scene_id:
+          type: string
+          format: uuid
+        image_set_id:
+          type: string
+          format: uuid
+        quality_profile:
+          type: string
+          enum: [fast, balanced, high]
+          default: balanced
+
+    RegistrationJobRequest:
+      type: object
+      required: [project_id, scene_id, design_model_id, reality_model_id, method]
+      properties:
+        project_id:
+          type: string
+          format: uuid
+        scene_id:
+          type: string
+          format: uuid
+        design_model_id:
+          type: string
+          format: uuid
+        reality_model_id:
+          type: string
+          format: uuid
+        method:
+          type: array
+          items:
+            type: string
+            enum: [gcp, icp]
+
+    DiffJobRequest:
+      type: object
+      required: [project_id, scene_id, registration_job_id, modes]
+      properties:
+        project_id:
+          type: string
+          format: uuid
+        scene_id:
+          type: string
+          format: uuid
+        registration_job_id:
+          type: string
+          format: uuid
+        modes:
+          type: array
+          items:
+            type: string
+            enum: [geometry, semantic, rule]
+
+    AIVisionJobRequest:
+      type: object
+      required: [project_id, scene_id]
+      properties:
+        project_id:
+          type: string
+          format: uuid
+        scene_id:
+          type: string
+          format: uuid
+        model_profile:
+          type: string
+        targets:
+          type: array
+          items:
+            type: string

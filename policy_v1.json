@@ -1,0 +1,36 @@
+{
+  "input_policy": {
+    "dwg_enabled": true,
+    "pdf_enabled": true,
+    "pdf_mode": "optional",
+    "pdf_skip_allowed": true,
+    "prefer_source": "dwg",
+    "max_match_distance_m": 10.0,
+    "min_match_score": 0.45,
+    "source_weights": {
+      "dwg": 1.0,
+      "pdf": 0.7
+    }
+  },
+  "llm_policy": {
+    "enabled": true,
+    "review_mode": "selective",
+    "low_match_threshold": 0.65,
+    "near_threshold_margin": 0.02,
+    "triggers": {
+      "low_match_confidence": true,
+      "rule_conflict": true,
+      "pdf_source_near_threshold": true
+    },
+    "output_schema_required": true,
+    "evidence_reference_required": true
+  },
+  "risk_gate": {
+    "min_confidence_for_auto_close": 0.75,
+    "force_manual_review_levels": [
+      "high",
+      "critical"
+    ],
+    "force_manual_review_when_pdf_low_conf": true
+  }
+}

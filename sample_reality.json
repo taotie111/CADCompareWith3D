@@ -1,0 +1,56 @@
+{
+  "project_id": "demo-water-001",
+  "scene_id": "scene-20260416",
+  "objects": [
+    {
+      "id": "sluice_axis_01",
+      "type": "sluice_axis",
+      "location": "闸室1段",
+      "x": 1000.22,
+      "y": 2000.08,
+      "z": 35.21,
+      "length_m": 48.8,
+      "width_m": 12.3,
+      "height_m": 18.1,
+      "deformation_m": 0.12,
+      "deformation_area_m2": 3.5
+    },
+    {
+      "id": "pier_01",
+      "type": "pier",
+      "location": "闸墩1",
+      "x": 1012.05,
+      "y": 2005.02,
+      "z": 34.78,
+      "length_m": 6.02,
+      "width_m": 2.01,
+      "height_m": 10.05,
+      "deformation_m": 0.02,
+      "deformation_area_m2": 1.0
+    },
+    {
+      "id": "pier_02",
+      "type": "pier",
+      "location": "闸墩2",
+      "x": 1020.04,
+      "y": 2005.01,
+      "z": 34.95,
+      "length_m": 6.01,
+      "width_m": 2.00,
+      "height_m": 10.00,
+      "deformation_m": 0.01,
+      "deformation_area_m2": 0.8
+    },
+    {
+      "id": "illegal_obj_01",
+      "type": "temporary_structure",
+      "location": "闸室北侧",
+      "x": 1006.0,
+      "y": 2010.0,
+      "z": 35.10,
+      "length_m": 4.0,
+      "width_m": 2.0,
+      "height_m": 2.5
+    }
+  ]
+}

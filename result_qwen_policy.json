@@ -1,0 +1,361 @@
+{
+  "generated_at": "2026-04-16T09:34:05.708496Z",
+  "summary": {
+    "design_objects": 4,
+    "reality_objects": 4,
+    "matched_objects": 3,
+    "missing_objects": 1,
+    "unplanned_objects": 1,
+    "events_total": 9,
+    "events_by_level": {
+      "low": 2,
+      "medium": 1,
+      "high": 6,
+      "critical": 0
+    },
+    "manual_review_required": 6,
+    "llm_reviews_total": 0
+  },
+  "events": [
+    {
+      "rule_id": "GEO_PLANAR_OFFSET",
+      "risk_type": "关键构件平面偏移",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "现场复核测量",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "planar_offset_m",
+        "metric_value": 0.23409399821439328,
+        "thresholds": {
+          "low": 0.05,
+          "medium": 0.1,
+          "high": 0.2,
+          "critical": 0.3
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS",
+          "merged_from": [
+            "pdf"
+          ]
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.96,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      }
+    },
+    {
+      "rule_id": "GEO_ELEVATION_DEVIATION",
+      "risk_type": "关键构件高程偏差",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "复测并核对施工记录",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "elevation_deviation_m",
+        "metric_value": 0.21000000000000085,
+        "thresholds": {
+          "low": 0.03,
+          "medium": 0.08,
+          "high": 0.15,
+          "critical": 0.25
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS",
+          "merged_from": [
+            "pdf"
+          ]
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.96,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      }
+    },
+    {
+      "rule_id": "DIMENSION_DEVIATION_RATE",
+      "risk_type": "关键尺寸偏差率",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "复核放样与边线",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "dimension_deviation_rate",
+        "metric_value": 0.02500000000000006,
+        "thresholds": {
+          "low": 0.005,
+          "medium": 0.01,
+          "high": 0.02,
+          "critical": 0.03
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS",
+          "merged_from": [
+            "pdf"
+          ]
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.96,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      }
+    },
+    {
+      "rule_id": "STR_LOCAL_DEFORMATION",
+      "risk_type": "局部变形疑似",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "现场复核并加密监测",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "deformation_m": 0.12,
+        "area_m2": 3.5,
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS",
+          "merged_from": [
+            "pdf"
+          ]
+        }
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.96,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      }
+    },
+    {
+      "rule_id": "GEO_PLANAR_OFFSET",
+      "risk_type": "关键构件平面偏移",
+      "level": "low",
+      "location": "闸墩1",
+      "suggestion": "现场复核",
+      "evidence": {
+        "design_id": "pier_01",
+        "reality_id": "pier_01",
+        "metric": "planar_offset_m",
+        "metric_value": 0.05385164807129606,
+        "thresholds": {
+          "low": 0.05,
+          "medium": 0.1,
+          "high": 0.2,
+          "critical": 0.3
+        },
+        "dimension_detail": {
+          "length_m": 0.0033333333333332624,
+          "width_m": 0.004999999999999893,
+          "height_m": 0.005000000000000071
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "PIER"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": false,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9733,
+      "source_type": "dwg",
+      "source_confidence": 0.95,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9946,
+        "S_dim": 0.9956,
+        "S_src": 1.0,
+        "distance_m": 0.0539
+      }
+    },
+    {
+      "rule_id": "DIMENSION_DEVIATION_RATE",
+      "risk_type": "关键尺寸偏差率",
+      "level": "low",
+      "location": "闸墩1",
+      "suggestion": "现场复核",
+      "evidence": {
+        "design_id": "pier_01",
+        "reality_id": "pier_01",
+        "metric": "dimension_deviation_rate",
+        "metric_value": 0.005000000000000071,
+        "thresholds": {
+          "low": 0.005,
+          "medium": 0.01,
+          "high": 0.02,
+          "critical": 0.03
+        },
+        "dimension_detail": {
+          "length_m": 0.0033333333333332624,
+          "width_m": 0.004999999999999893,
+          "height_m": 0.005000000000000071
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "PIER"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": false,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9733,
+      "source_type": "dwg",
+      "source_confidence": 0.95,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9946,
+        "S_dim": 0.9956,
+        "S_src": 1.0,
+        "distance_m": 0.0539
+      }
+    },
+    {
+      "rule_id": "GEO_ELEVATION_DEVIATION",
+      "risk_type": "关键构件高程偏差",
+      "level": "high",
+      "location": "闸墩2",
+      "suggestion": "复测并核对施工记录",
+      "evidence": {
+        "design_id": "pier_02",
+        "reality_id": "pier_02",
+        "metric": "elevation_deviation_m",
+        "metric_value": 0.15000000000000568,
+        "thresholds": {
+          "low": 0.03,
+          "medium": 0.08,
+          "high": 0.15,
+          "critical": 0.25
+        },
+        "dimension_detail": {
+          "length_m": 0.0016666666666666312,
+          "width_m": 0.0,
+          "height_m": 0.0
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "PIER"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9741,
+      "source_type": "dwg",
+      "source_confidence": 0.95,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9959,
+        "S_dim": 0.9994,
+        "S_src": 1.0,
+        "distance_m": 0.0412
+      }
+    },
+    {
+      "rule_id": "SEM_MISSING_CONSTRUCTION",
+      "risk_type": "漏建检测（设计有、实景无）",
+      "level": "medium",
+      "location": "project_scope",
+      "suggestion": "补勘并确认工序状态",
+      "evidence": {
+        "missing_count": 1,
+        "missing_design_ids": [
+          "gate_slot_01"
+        ]
+      },
+      "manual_review_required": false,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "source_type": "mixed",
+      "source_confidence": 1.0,
+      "match_confidence": 1.0
+    },
+    {
+      "rule_id": "SEM_UNPLANNED_CONSTRUCTION",
+      "risk_type": "疑似违建（实景有、设计无）",
+      "level": "high",
+      "location": "project_scope",
+      "suggestion": "核查设计变更单",
+      "evidence": {
+        "unplanned_count": 1,
+        "unplanned_reality_ids": [
+          "illegal_obj_01"
+        ]
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "source_type": "mixed",
+      "source_confidence": 1.0,
+      "match_confidence": 1.0
+    }
+  ],
+  "llm_reviews": []
+}
