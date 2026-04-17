@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAD对比实景 - 单页POC</title>
+  <link rel="stylesheet" href="https://unpkg.com/cesium@1.118/Build/Cesium/Widgets/widgets.css" />
+  <link rel="stylesheet" href="./poc_test_page.css" />
+  <script src="https://unpkg.com/cesium@1.118/Build/Cesium/Cesium.js"></script>
+</head>
+<body>
+  <header class="header">
+    <h1>CAD对比实景测试页（单页POC）</h1>
+    <div class="header-actions">
+      <button id="btnStart">启动对比任务</button>
+      <button id="btnStopPoll" class="secondary">停止轮询</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel left">
+      <h2>输入配置</h2>
+
+      <label>网关Base URL</label>
+      <input id="gatewayBaseUrl" placeholder="例如: https://your-gateway/api/v1" />
+
+      <label>Bearer Token</label>
+      <input id="bearerToken" type="password" placeholder="输入Bearer Token" />
+
+      <label>场景模式</label>
+      <select id="sceneMode">
+        <option value="tileset_url">tileset_url</option>
+        <option value="web_url">web_url</option>
+      </select>
+
+      <label>场景地址（二选一）</label>
+      <input id="sceneUrl" placeholder="web_url 或 tileset_url" />
+
+      <label>坐标系</label>
+      <select id="coordinateSystem">
+        <option value="CGCS2000">CGCS2000</option>
+        <option value="WGS84">WGS84</option>
+      </select>
+
+      <label>CAD文件（DWG）</label>
+      <input id="cadFile" type="file" accept=".dwg" />
+
+      <div class="check-group">
+        <label><input type="checkbox" id="llmEnabled" checked /> 启用LLM复核</label>
+        <label><input type="checkbox" id="preferDwg" checked /> DWG优先</label>
+      </div>
+
+      <hr />
+      <div class="status-box">
+        <div><strong>任务ID:</strong> <span id="jobId">-</span></div>
+        <div><strong>任务状态:</strong> <span id="jobStatus">idle</span></div>
+      </div>
+
+      <h3>日志</h3>
+      <pre id="logBox" class="log-box"></pre>
+    </section>
+
+    <section class="panel center">
+      <h2>三维场景</h2>
+      <div class="viewer-switch">
+        <button id="tabCesium" class="tab active">Cesium</button>
+        <button id="tabWeb" class="tab">Web预览</button>
+      </div>
+      <div id="cesiumContainer" class="viewer"></div>
+      <iframe id="webFrame" class="viewer hidden" title="Web场景预览"></iframe>
+    </section>
+
+    <section class="panel right">
+      <h2>风险结果</h2>
+      <div id="summary" class="summary">暂无结果</div>
+
+      <label>风险级别过滤</label>
+      <select id="riskFilter">
+        <option value="all">all</option>
+        <option value="critical">critical</option>
+        <option value="high">high</option>
+        <option value="medium">medium</option>
+        <option value="low">low</option>
+      </select>
+
+      <ul id="eventList" class="event-list"></ul>
+    </section>
+  </main>
+
+  <script src="./poc_test_page.js"></script>
+</body>
+</html>

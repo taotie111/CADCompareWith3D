@@ -1,0 +1,284 @@
+{
+  "generated_at": "2026-04-17T01:47:38.223101Z",
+  "summary": {
+    "design_objects": 1,
+    "reality_objects": 4,
+    "matched_objects": 1,
+    "missing_objects": 0,
+    "unplanned_objects": 3,
+    "events_total": 5,
+    "events_by_level": {
+      "low": 0,
+      "medium": 0,
+      "high": 4,
+      "critical": 1
+    },
+    "manual_review_required": 5,
+    "llm_reviews_total": 3
+  },
+  "events": [
+    {
+      "rule_id": "GEO_PLANAR_OFFSET",
+      "risk_type": "关键构件平面偏移",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "1. 立即组织测量人员进行现场复核，确认实际偏移量；2. 若复核属实，由设计单位验算偏差对结构安全及金属结构兼容性的影响；3. 根据验算结果制定纠偏方案或设计变更建议。",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "planar_offset_m",
+        "metric_value": 0.23409399821439328,
+        "thresholds": {
+          "low": 0.05,
+          "medium": 0.1,
+          "high": 0.2,
+          "critical": 0.3
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": true,
+      "review_source": "llm",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.98,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      },
+      "llm_review": {
+        "review_source": "llm",
+        "risk_interpretation": "闸室 1 段关键构件平面偏移值为 0.234m，已超过高风险阈值 0.2m，接近危急值 0.3m。该偏差超出允许范围，可能影响水闸轴线对齐、闸门启闭机轨道匹配及水流形态，存在结构安全与运行功能隐患。",
+        "evidence_refs": [
+          "design_main.dwg:SLUICE_AXIS",
+          "sluice_axis_01"
+        ],
+        "confidence_delta": 0.02,
+        "recommended_action": "1. 立即组织测量人员进行现场复核，确认实际偏移量；2. 若复核属实，由设计单位验算偏差对结构安全及金属结构兼容性的影响；3. 根据验算结果制定纠偏方案或设计变更建议。",
+        "schema_valid": true,
+        "fallback_used": false
+      }
+    },
+    {
+      "rule_id": "GEO_ELEVATION_DEVIATION",
+      "risk_type": "关键构件高程偏差",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "1. 立即暂停闸室 1 段相关后续工序；2. 组织测量监理进行独立复测验证；3. 追溯施工放样记录与隐蔽工程验收资料；4. 若偏差确认，需由设计单位复核结构安全并提出加固或修正方案。",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "elevation_deviation_m",
+        "metric_value": 0.21000000000000085,
+        "thresholds": {
+          "low": 0.03,
+          "medium": 0.08,
+          "high": 0.15,
+          "critical": 0.25
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": true,
+      "review_source": "llm",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 1.0,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      },
+      "llm_review": {
+        "review_source": "llm",
+        "risk_interpretation": "闸室 1 段关键构件高程偏差实测值 0.21m，已超过高风险阈值 0.15m 且接近临界阈值 0.25m。该偏差量级较大，可能影响闸门安装精度、止水效果及结构受力，属于严重几何尺寸偏差风险。",
+        "evidence_refs": [
+          "design_id: sluice_axis_01",
+          "reality_id: sluice_axis_01",
+          "source_file: design_main.dwg",
+          "layer: SLUICE_AXIS"
+        ],
+        "confidence_delta": 0.05,
+        "recommended_action": "1. 立即暂停闸室 1 段相关后续工序；2. 组织测量监理进行独立复测验证；3. 追溯施工放样记录与隐蔽工程验收资料；4. 若偏差确认，需由设计单位复核结构安全并提出加固或修正方案。",
+        "schema_valid": true,
+        "fallback_used": false
+      }
+    },
+    {
+      "rule_id": "DIMENSION_DEVIATION_RATE",
+      "risk_type": "关键尺寸偏差率",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "1. 立即组织现场测量复核闸室 1 段实际宽度；2. 调阅施工放样记录及监理验收签证；3. 评估偏差对闸门埋件及启闭机安装的影响；4. 若影响结构安全或功能，需制定整改或加固方案。",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "metric": "dimension_deviation_rate",
+        "metric_value": 0.02500000000000006,
+        "thresholds": {
+          "low": 0.005,
+          "medium": 0.01,
+          "high": 0.02,
+          "critical": 0.03
+        },
+        "dimension_detail": {
+          "length_m": 0.016666666666666607,
+          "width_m": 0.02500000000000006,
+          "height_m": 0.005555555555555635
+        },
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS"
+        },
+        "image_urls": []
+      },
+      "manual_review_required": true,
+      "llm_reviewed": true,
+      "review_source": "llm",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 1.0,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      },
+      "llm_review": {
+        "review_source": "llm",
+        "risk_interpretation": "关键尺寸偏差率实测值为 2.5%，已超过高风险阈值 2.0%，未达到危急阈值 3.0%。偏差主要集中在宽度方向（2.5%），可能影响闸门安装精度及止水密封性能。数据源可信度较高（匹配度 97.31%）。",
+        "evidence_refs": [
+          "evidence.metric_value",
+          "evidence.thresholds.high",
+          "evidence.dimension_detail.width_m",
+          "event.match_confidence"
+        ],
+        "confidence_delta": 0.93,
+        "recommended_action": "1. 立即组织现场测量复核闸室 1 段实际宽度；2. 调阅施工放样记录及监理验收签证；3. 评估偏差对闸门埋件及启闭机安装的影响；4. 若影响结构安全或功能，需制定整改或加固方案。",
+        "schema_valid": true,
+        "fallback_used": false
+      }
+    },
+    {
+      "rule_id": "STR_LOCAL_DEFORMATION",
+      "risk_type": "局部变形疑似",
+      "level": "high",
+      "location": "闸室1段",
+      "suggestion": "现场复核并加密监测",
+      "evidence": {
+        "design_id": "sluice_axis_01",
+        "reality_id": "sluice_axis_01",
+        "deformation_m": 0.12,
+        "area_m2": 3.5,
+        "trace": {
+          "file": "design_main.dwg",
+          "layer": "SLUICE_AXIS"
+        }
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "match_confidence": 0.9731,
+      "source_type": "dwg",
+      "source_confidence": 0.96,
+      "match_reason": {
+        "S_id": 1.0,
+        "S_type": 1.0,
+        "S_dist": 0.9766,
+        "S_dim": 0.9843,
+        "S_src": 1.0,
+        "distance_m": 0.2341
+      }
+    },
+    {
+      "rule_id": "SEM_UNPLANNED_CONSTRUCTION",
+      "risk_type": "疑似违建（实景有、设计无）",
+      "level": "critical",
+      "location": "project_scope",
+      "suggestion": "立即组织现场核查与合规审查",
+      "evidence": {
+        "unplanned_count": 3,
+        "unplanned_reality_ids": [
+          "pier_01",
+          "pier_02",
+          "illegal_obj_01"
+        ]
+      },
+      "manual_review_required": true,
+      "llm_reviewed": false,
+      "review_source": "rule_engine",
+      "source_type": "mixed",
+      "source_confidence": 1.0,
+      "match_confidence": 1.0
+    }
+  ],
+  "llm_reviews": [
+    {
+      "review_source": "llm",
+      "risk_interpretation": "闸室 1 段关键构件平面偏移值为 0.234m，已超过高风险阈值 0.2m，接近危急值 0.3m。该偏差超出允许范围，可能影响水闸轴线对齐、闸门启闭机轨道匹配及水流形态，存在结构安全与运行功能隐患。",
+      "evidence_refs": [
+        "design_main.dwg:SLUICE_AXIS",
+        "sluice_axis_01"
+      ],
+      "confidence_delta": 0.02,
+      "recommended_action": "1. 立即组织测量人员进行现场复核，确认实际偏移量；2. 若复核属实，由设计单位验算偏差对结构安全及金属结构兼容性的影响；3. 根据验算结果制定纠偏方案或设计变更建议。",
+      "schema_valid": true,
+      "fallback_used": false
+    },
+    {
+      "review_source": "llm",
+      "risk_interpretation": "闸室 1 段关键构件高程偏差实测值 0.21m，已超过高风险阈值 0.15m 且接近临界阈值 0.25m。该偏差量级较大，可能影响闸门安装精度、止水效果及结构受力，属于严重几何尺寸偏差风险。",
+      "evidence_refs": [
+        "design_id: sluice_axis_01",
+        "reality_id: sluice_axis_01",
+        "source_file: design_main.dwg",
+        "layer: SLUICE_AXIS"
+      ],
+      "confidence_delta": 0.05,
+      "recommended_action": "1. 立即暂停闸室 1 段相关后续工序；2. 组织测量监理进行独立复测验证；3. 追溯施工放样记录与隐蔽工程验收资料；4. 若偏差确认，需由设计单位复核结构安全并提出加固或修正方案。",
+      "schema_valid": true,
+      "fallback_used": false
+    },
+    {
+      "review_source": "llm",
+      "risk_interpretation": "关键尺寸偏差率实测值为 2.5%，已超过高风险阈值 2.0%，未达到危急阈值 3.0%。偏差主要集中在宽度方向（2.5%），可能影响闸门安装精度及止水密封性能。数据源可信度较高（匹配度 97.31%）。",
+      "evidence_refs": [
+        "evidence.metric_value",
+        "evidence.thresholds.high",
+        "evidence.dimension_detail.width_m",
+        "event.match_confidence"
+      ],
+      "confidence_delta": 0.93,
+      "recommended_action": "1. 立即组织现场测量复核闸室 1 段实际宽度；2. 调阅施工放样记录及监理验收签证；3. 评估偏差对闸门埋件及启闭机安装的影响；4. 若影响结构安全或功能，需制定整改或加固方案。",
+      "schema_valid": true,
+      "fallback_used": false
+    }
+  ]
+}

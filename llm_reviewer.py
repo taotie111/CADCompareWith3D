@@ -44,7 +44,7 @@ class LLMReviewer:
         if not api_key:
             raise ValueError("llm api key is empty")
 
-        model = str(self.provider.get("model", "qwen3.5-plus"))
+        model = str(self.provider.get("model", "qianwen-3.5-plus"))
         timeout_seconds = int(self.provider.get("timeout_seconds", 30))
 
         payload = {

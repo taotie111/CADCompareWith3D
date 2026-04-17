@@ -30,7 +30,7 @@ DEFAULT_POLICY: Dict[str, Any] = {
             "api_key": "",
             "api_key_env": "LLM_API_KEY",
             "api": "openai-completions",
-            "model": "qwen3.5-plus",
+            "model": "qianwen-3.5-plus",
             "timeout_seconds": 30,
             "endpoint_path": "/chat/completions"
         }

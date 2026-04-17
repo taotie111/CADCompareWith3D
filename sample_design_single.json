@@ -1,0 +1,23 @@
+{
+  "project_id": "demo-water-001",
+  "scene_id": "scene-20260416",
+  "objects": [
+    {
+      "id": "sluice_axis_01",
+      "type": "sluice_axis",
+      "location": "闸室1段",
+      "x": 1000.0,
+      "y": 2000.0,
+      "z": 35.0,
+      "length_m": 48.0,
+      "width_m": 12.0,
+      "height_m": 18.0,
+      "source_type": "dwg",
+      "confidence": 0.96,
+      "trace": {
+        "file": "design_main.dwg",
+        "layer": "SLUICE_AXIS"
+      }
+    }
+  ]
+}
