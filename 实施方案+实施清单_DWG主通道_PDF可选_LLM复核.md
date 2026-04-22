@@ -299,10 +299,47 @@ risk_gate:
 
 ---
 
-## 14. 立即执行建议（下一步）
+## 14. DWG主通道专项增强（2026-04-21）
 
-1. 先落地 **MySQL增量迁移SQL**（新增source/confidence/审核字段）
-2. 再改 `compare_engine.py` 三个核心函数（匹配评分、门控、LLM hook）
-3. 最后补 API 与联调测试，不先改前端可视化
+### 14.1 坐标配准（已落地）
 
-这样可以在不推翻现有MVP的前提下，最小成本实现“准确率增强版”。
+实现位置：`run_grid_compare.py`
+
+- 新增 `input_policy.dwg.registration`：`mode=off|auto|manual`
+- auto 模式：按 `auto_scale_candidates` 组合 scale + offset，基于 overlap 提升选择最优
+- manual 模式：应用 `manual_transform(scale_x/scale_y/dx/dy)`
+- 保护策略：改进不足时回退；`min_overlap_ratio_to_skip` 与 `min_improve_ratio` 可调
+- 基线报告新增 `registration` 章节，记录配准前后指标与变换参数
+
+### 14.2 DWG图层语义映射（已落地）
+
+实现位置：`dwg_geometry_extractor.py`
+
+- 新增 `layer_mapping.enabled/ignore_layers/unknown_type/rules`
+- 规则支持：`exact` / `contains` / `regex`
+- 输出新增 `mapping_stats`：`mapped_features/unknown_features/ignored_features/rules_hit`
+- 不命中规则时回退 `unknown_type`，可追溯未识别比例
+
+### 14.3 DWG解析性能优化（已落地）
+
+实现位置：`dwg_geometry_extractor.py`、`checkpoints/dwg_validate/run_dwg_regression.py`
+
+- `_parse_geojson`：改为单次遍历 bbox 提取，减少中间列表创建
+- `_build_design_grid`：聚合从列表改为 `sum_cov_weight/sum_weight`
+- 回归脚本新增 `elapsed_stats_sec`（min/mean/median/p50/p95/max）
+- 新增性能门禁：`--max-elapsed-p50-sec`、`--max-elapsed-p95-sec`
+
+### 14.4 验收标准更新
+
+- 配准有效性：`baseline_report.registration.applied=true` 或 `after_overlap_ratio > before_overlap_ratio`
+- 网格匹配：`compare_summary.matched > 0`
+- 语义映射可观测：`grid_design.mapping_stats` 存在且字段完整
+- 回归稳定：`overall_pass=true` 且漂移阈值维持 2%
+- 性能可门禁：`performance_gate.p50_pass/p95_pass` 可配置验证
+
+### 14.5 回滚策略更新
+
+- 关闭配准：`registration.mode=off`
+- 关闭映射：`layer_mapping.enabled=false`
+- 放宽性能门禁：移除 `--max-elapsed-p50-sec/--max-elapsed-p95-sec` 或提高阈值
+
